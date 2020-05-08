@@ -3,7 +3,7 @@ import {
   GET_PROGRESS,
   GET_COMPLETED,
   ERROR,
-  GET_TASKS,
+  SET_TIMEPASS,
 } from "../types";
 
 export default (state, action) => {
@@ -13,6 +13,11 @@ export default (state, action) => {
         ...state,
         jobsInProcess: action.payload,
         loading: false,
+      };
+    case SET_TIMEPASS:
+      return {
+        ...state,
+        timepass: action.payload,
       };
 
     default:

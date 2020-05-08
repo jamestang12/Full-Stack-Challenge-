@@ -1,7 +1,13 @@
 import React, { useReducer } from "react";
 import JobContext from "./jobContext";
 import jobReducer from "./jobReducer";
-import { ADD_JOB, GET_PROGRESS, GET_COMPLETED, ERROR } from "../types";
+import {
+  ADD_JOB,
+  GET_PROGRESS,
+  GET_COMPLETED,
+  ERROR,
+  SET_TIMEPASS,
+} from "../types";
 import axios from "axios";
 
 const JobState = (props) => {
@@ -10,6 +16,7 @@ const JobState = (props) => {
     jobsInProcess: null,
     jobsInCompleted: null,
     tasks: null,
+    timepass: null,
   };
 
   const [state, dispatch] = useReducer(jobReducer, initialState);
@@ -30,13 +37,23 @@ const JobState = (props) => {
     }
   };
 
+  //Set timepass
+  const setTimePass = (value) => {
+    dispatch({
+      type: SET_TIMEPASS,
+      payload: value,
+    });
+  };
+
   return (
     <JobContext.Provider
       value={{
         loading: state.loading,
         jobsInCompleted: state.jobsInCompleted,
         jobsInProcess: state.jobsInProcess,
+        timepass: state.timepass,
         getJobsInProcess,
+        setTimePass,
       }}
     >
       {props.children}
