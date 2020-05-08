@@ -16,6 +16,11 @@ router.post("/", async (req, res) => {
     date,
   } = req.body;
 
+  const startDate = new Date();
+  let endDate = new Date(date);
+
+  const duration = endDate.getTime() - startDate.getTime();
+
   try {
     const jobs = new Jobs({
       problem,
@@ -25,6 +30,7 @@ router.post("/", async (req, res) => {
       otherReference,
       completed,
       date,
+      duration,
     });
 
     await jobs.save();
@@ -43,7 +49,7 @@ router.get("/inProcess", async (req, res) => {
     const jobs = await Jobs.find({ completed: false });
     res.json(jobs);
   } catch (err) {
-    console.log(err);
+    console.log({ data: jobs });
     res.status(500).send("Server Error");
   }
 });

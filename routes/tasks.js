@@ -28,15 +28,12 @@ router.post("/:id", async (req, res) => {
   }
 });
 
-// @route   GET api/tasks/:id
+// @route   GET api/tasks
 // @desc    Get tasks
 // @access  Public
-router.get("/:id", async (req, res) => {
+router.get("/", async (req, res) => {
   try {
-    const job = await Jobs.findById(req.params.id);
-    if (!job) return res.status(404).json({ msg: "Job not found" });
-
-    const tasks = await Tasks.find({ job: req.params.id });
+    const tasks = await Tasks.find();
     res.json(tasks);
   } catch (err) {
     console.log(err);
