@@ -14,7 +14,7 @@ const Tasks = mongoose.Schema({
     required: true,
   },
   job: {
-    type: mongoose.Schema.Types.ObjectId,
+    type: String,
     ref: "jobs",
   },
 });

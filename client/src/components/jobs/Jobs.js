@@ -17,7 +17,7 @@ const Jobs = () => {
     return (
       <Fragment>
         {jobsInProcess.map((job) => (
-          <JobItem job={job} />
+          <JobItem job={job} key={job._id} />
         ))}
       </Fragment>
     );

@@ -28,9 +28,14 @@ const Jobs = mongoose.Schema({
   date: {
     type: Date,
     required: true,
+    default: Date.now(),
   },
   duration: {
     type: Number,
+    required: true,
+  },
+  _id: {
+    type: String,
     required: true,
   },
 });

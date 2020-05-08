@@ -24,7 +24,7 @@ router.post("/:id", async (req, res) => {
     res.status(200).send("Task Added");
   } catch (err) {
     console.log(err);
-    res.status(500).send("Server Error");
+    res.status(500).send(err);
   }
 });
 

@@ -1,10 +1,4 @@
-import {
-  ADD_JOB,
-  GET_PROGRESS,
-  GET_COMPLETED,
-  ERROR,
-  SET_TIMEPASS,
-} from "../types";
+import { ADD_JOB, GET_PROGRESS, GET_COMPLETED, ERROR } from "../types";
 
 export default (state, action) => {
   switch (action.type) {
@@ -14,10 +8,9 @@ export default (state, action) => {
         jobsInProcess: action.payload,
         loading: false,
       };
-    case SET_TIMEPASS:
+    case ADD_JOB:
       return {
-        ...state,
-        timepass: action.payload,
+        state,
       };
 
     default:

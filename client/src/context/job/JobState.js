@@ -1,13 +1,7 @@
 import React, { useReducer } from "react";
 import JobContext from "./jobContext";
 import jobReducer from "./jobReducer";
-import {
-  ADD_JOB,
-  GET_PROGRESS,
-  GET_COMPLETED,
-  ERROR,
-  SET_TIMEPASS,
-} from "../types";
+import { ADD_JOB, GET_PROGRESS, GET_COMPLETED, ERROR } from "../types";
 import axios from "axios";
 
 const JobState = (props) => {
@@ -37,12 +31,25 @@ const JobState = (props) => {
     }
   };
 
-  //Set timepass
-  const setTimePass = (value) => {
-    dispatch({
-      type: SET_TIMEPASS,
-      payload: value,
-    });
+  //Add job in process
+  const addJobInProcess = async (value) => {
+    const config = {
+      headers: {
+        "Contact-Type": "application/json",
+      },
+    };
+    try {
+      const res = await axios.post("/api/jobs", value, config);
+      dispatch({
+        type: ADD_JOB,
+        payload: res.data,
+      });
+    } catch (err) {
+      dispatch({
+        type: ERROR,
+        payload: err,
+      });
+    }
   };
 
   return (
@@ -53,7 +60,7 @@ const JobState = (props) => {
         jobsInProcess: state.jobsInProcess,
         timepass: state.timepass,
         getJobsInProcess,
-        setTimePass,
+        addJobInProcess,
       }}
     >
       {props.children}

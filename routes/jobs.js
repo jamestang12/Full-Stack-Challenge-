@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const Jobs = require("../models/Jobs");
+const mongoose = require("mongoose");
 
 // @route   POST api/jobs
 // @desc    Adding a new job
@@ -14,6 +15,7 @@ router.post("/", async (req, res) => {
     otherReference,
     completed,
     date,
+    _id,
   } = req.body;
 
   const startDate = new Date();
@@ -31,6 +33,7 @@ router.post("/", async (req, res) => {
       completed,
       date,
       duration,
+      _id,
     });
 
     await jobs.save();
