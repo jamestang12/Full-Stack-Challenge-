@@ -9,6 +9,7 @@ import {
   DELETE_CURRENT_TASK,
   ADD_TASKS,
   SET_CURRENT_TASK,
+  UPDATE_CURRENT_TASK,
 } from "../types";
 import axios from "axios";
 
@@ -39,6 +40,14 @@ const TaskState = (props) => {
         payload: err,
       });
     }
+  };
+
+  //Update current task
+  const updateCurrentTask = (value) => {
+    dispatch({
+      type: UPDATE_CURRENT_TASK,
+      payload: value,
+    });
   };
 
   //Add jobs into databse
@@ -148,6 +157,7 @@ const TaskState = (props) => {
         deleteCurrentTask,
         addTask,
         setCurrentTask,
+        updateCurrentTask,
       }}
     >
       {props.children}

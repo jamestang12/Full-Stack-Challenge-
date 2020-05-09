@@ -6,6 +6,7 @@ import {
   DELETE_CURRENT_TASK,
   ADD_TASKS,
   SET_CURRENT_TASK,
+  UPDATE_CURRENT_TASK,
 } from "../types";
 
 export default (state, action) => {
@@ -36,6 +37,14 @@ export default (state, action) => {
         ...state,
         error: action.payload,
       };
+    case UPDATE_CURRENT_TASK: {
+      return {
+        ...state,
+        currentTasks: state.currentTasks.map((task) =>
+          task.jobId === action.payload.jobId ? action.payload : task
+        ),
+      };
+    }
     case DELETE_CURRENT_TASK:
       return {
         ...state,
