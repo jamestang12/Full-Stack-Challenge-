@@ -1,18 +1,19 @@
 import React, { Fragment, useContext, useEffect } from "react";
 import JobContext from "../../context/job/jobContext";
 import JobItem from "./JobItem";
+import Preloader from "../layout/Preloading";
 
 const Jobs = () => {
   const jobContext = useContext(JobContext);
-  const { jobsInProcess, getJobsInProcess, loading } = jobContext;
+  const { jobsInProcess, getJobsInProcess, loading, loading2 } = jobContext;
 
   useEffect(() => {
     getJobsInProcess();
     //eslint-disable-next-line
-  }, []);
+  }, [loading2, loading]);
 
-  if (loading) {
-    return <div>Loading</div>;
+  if (loading || loading2) {
+    return <Preloader />;
   } else {
     return (
       <Fragment>

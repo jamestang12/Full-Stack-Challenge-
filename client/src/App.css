@@ -40,3 +40,8 @@ body {
 .nav__icon {
   font-size: 18px;
 }
+
+.btn-extend {
+  display: block;
+  width: 100%;
+}

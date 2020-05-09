@@ -10,9 +10,6 @@ router.post("/:id", async (req, res) => {
   const { jobNumber, SerialNumber, instructment } = req.body;
 
   try {
-    const job = await Jobs.findById(req.params.id);
-    if (!job) return res.status(404).json({ msg: "Job not found" });
-
     const task = new Tasks({
       jobNumber,
       SerialNumber,

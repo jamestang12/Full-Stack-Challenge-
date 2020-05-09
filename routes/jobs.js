@@ -22,7 +22,7 @@ router.post("/", async (req, res) => {
   let endDate = new Date(date);
 
   const duration = endDate.getTime() - startDate.getTime();
-
+  console.log(duration);
   try {
     const jobs = new Jobs({
       problem,
@@ -40,7 +40,7 @@ router.post("/", async (req, res) => {
     res.status(200).send("Job Added");
   } catch (err) {
     console.log(err);
-    res.status(500).send("Server Error");
+    res.status(500).send(err);
   }
 });
 

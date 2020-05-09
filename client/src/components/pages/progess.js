@@ -4,6 +4,8 @@ import Jobs from "../jobs/Jobs";
 import AddBtn from "../layout/AddBtn";
 import AddJobModal from "../jobs/AddJobModal";
 import M from "materialize-css/dist/js/materialize.min.js";
+import AddTaskModal from "../jobs/AddTaskModal";
+import EditTaskModal from "../jobs/EditTaskModal";
 
 export const Progess = () => {
   useEffect(() => {
@@ -17,6 +19,8 @@ export const Progess = () => {
       <Jobs />
       <AddBtn />
       <AddJobModal />
+      <EditTaskModal />
+      <AddTaskModal />
     </Fragment>
   );
 };
