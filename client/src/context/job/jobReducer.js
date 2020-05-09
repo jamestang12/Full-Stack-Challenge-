@@ -3,6 +3,7 @@ import {
   GET_PROGRESS,
   GET_COMPLETED,
   ERROR,
+  SET_PAGE,
   SET_LOADING,
 } from "../types";
 
@@ -24,6 +25,11 @@ export default (state, action) => {
       return {
         ...state,
         loading: true,
+      };
+    case SET_PAGE:
+      return {
+        ...state,
+        page: action.payload,
       };
 
     default:

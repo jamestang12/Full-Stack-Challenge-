@@ -7,6 +7,7 @@ import {
   GET_COMPLETED,
   ERROR,
   SET_LOADING,
+  SET_PAGE,
 } from "../types";
 import axios from "axios";
 
@@ -18,6 +19,7 @@ const JobState = (props) => {
     tasks: null,
     timepass: null,
     loading2: false,
+    page: "process",
   };
 
   const [state, dispatch] = useReducer(jobReducer, initialState);
@@ -43,6 +45,14 @@ const JobState = (props) => {
     dispatch({
       type: SET_LOADING,
       payload: true,
+    });
+  };
+
+  //Set page
+  const setPage = (value) => {
+    dispatch({
+      type: SET_PAGE,
+      payload: value,
     });
   };
 
@@ -75,9 +85,11 @@ const JobState = (props) => {
         jobsInProcess: state.jobsInProcess,
         timepass: state.timepass,
         loading2: state.loading2,
+        page: state.page,
         getJobsInProcess,
         addJobInProcess,
         setLoading,
+        setPage,
       }}
     >
       {props.children}

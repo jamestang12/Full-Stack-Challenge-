@@ -10,18 +10,21 @@ import TaskState from "./context/task/TaskState";
 
 const App = () => {
   return (
-    <TaskState>
-      <JobState>
-        <Router>
-          <Fragment>
-            <Switch>
-              <Route exact path="/" component={Progess} />
-              <Route exact path="/completed" component={Completed} />
-            </Switch>
-          </Fragment>
-        </Router>
-      </JobState>
-    </TaskState>
+    <div className="page-container">
+      <TaskState>
+        <JobState>
+          <Router>
+            <Fragment>
+              <Switch>
+                <Route exact path="/" component={Progess} />
+                <Route exact path="/completed" component={Completed} />
+              </Switch>
+              <BottomNav />
+            </Fragment>
+          </Router>
+        </JobState>
+      </TaskState>
+    </div>
   );
 };
 
