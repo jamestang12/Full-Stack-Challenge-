@@ -49,7 +49,7 @@ export const JobItem = ({ job }) => {
       timePassRate = 0;
     }
 
-    if (timePassRate < 25) {
+    if (timePassRate < 25 || timePass2 < 0) {
       textColor = "determinate red lighten-1";
       textColor2 = "fas fa-clock medium red-text";
     }
