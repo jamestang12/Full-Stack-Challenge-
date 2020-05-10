@@ -7,6 +7,7 @@ import M from "materialize-css/dist/js/materialize.min.js";
 import AddTaskModal from "../jobs/AddTaskModal";
 import EditTaskModal from "../jobs/EditTaskModal";
 import JobContext from "../../context/job/jobContext";
+import { EditJomModal } from "../jobs/EditJomModal";
 
 export const Progess = () => {
   const jobContext = useContext(JobContext);
@@ -23,6 +24,7 @@ export const Progess = () => {
       <ProcessNavbar />
       <Jobs />
       <AddBtn />
+      <EditJomModal />
       <AddJobModal />
       <EditTaskModal />
       <AddTaskModal />

@@ -5,6 +5,8 @@ import {
   ERROR,
   SET_PAGE,
   SET_LOADING,
+  EDIT_JOB,
+  EDIT_TASK,
 } from "../types";
 
 export default (state, action) => {
@@ -30,6 +32,19 @@ export default (state, action) => {
       return {
         ...state,
         page: action.payload,
+      };
+    case EDIT_JOB:
+      return {
+        ...state,
+        currentJob: action.payload,
+        loading: false,
+      };
+    case EDIT_TASK:
+      return {
+        ...state,
+        editTask: action.payload,
+        serialNumber: action.payload2,
+        jobData: action.payload3,
       };
 
     default:

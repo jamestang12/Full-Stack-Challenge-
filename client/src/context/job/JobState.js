@@ -8,6 +8,8 @@ import {
   ERROR,
   SET_LOADING,
   SET_PAGE,
+  EDIT_JOB,
+  EDIT_TASK,
 } from "../types";
 import axios from "axios";
 
@@ -20,6 +22,10 @@ const JobState = (props) => {
     timepass: null,
     loading2: false,
     page: "process",
+    currentJob: [],
+    editTask: [],
+    serialNumber: [],
+    jobData: [],
   };
 
   const [state, dispatch] = useReducer(jobReducer, initialState);
@@ -46,6 +52,22 @@ const JobState = (props) => {
       type: SET_LOADING,
       payload: true,
     });
+  };
+
+  //Set job edit state
+  const setEditJob = async (id) => {
+    try {
+      const res = await axios.get(`/api/jobs/${id}`);
+      dispatch({
+        type: EDIT_JOB,
+        payload: res.data,
+      });
+    } catch (err) {
+      dispatch({
+        type: ERROR,
+        payload: err,
+      });
+    }
   };
 
   //Set page
@@ -77,6 +99,15 @@ const JobState = (props) => {
     }
   };
 
+  const setTask = (value, serialNumber, data) => {
+    dispatch({
+      type: EDIT_TASK,
+      payload: value,
+      payload2: serialNumber,
+      payload3: data,
+    });
+  };
+
   return (
     <JobContext.Provider
       value={{
@@ -86,10 +117,16 @@ const JobState = (props) => {
         timepass: state.timepass,
         loading2: state.loading2,
         page: state.page,
+        currentJob: state.currentJob,
+        editTask: state.editTask,
+        serialNumber: state.serialNumber,
+        jobData: state.jobData,
         getJobsInProcess,
         addJobInProcess,
         setLoading,
         setPage,
+        setEditJob,
+        setTask,
       }}
     >
       {props.children}

@@ -42,6 +42,10 @@ const Jobs = mongoose.Schema({
     type: Date,
     default: Date.now(),
   },
+  serverType: {
+    type: String,
+    default: null,
+  },
 });
 
 module.exports = mongoose.model("jobs", Jobs);

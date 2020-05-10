@@ -17,9 +17,13 @@ const Jobs = () => {
   } else {
     return (
       <Fragment>
-        {jobsInProcess.map((job) => (
-          <JobItem job={job} key={job._id} />
-        ))}
+        <div className="container">
+          <div className="row">
+            {jobsInProcess.map((job) => (
+              <JobItem job={job} key={job._id} />
+            ))}
+          </div>
+        </div>
       </Fragment>
     );
   }

@@ -71,6 +71,11 @@ export const AddJobModal = () => {
     <Fragment>
       <AddTaskModal />
       <div id="add-job-modal" className="modal" style={modalStyle}>
+        <nav>
+          <div className="nav-wrapper blue">
+            <span className="brand-logo center">Add Job</span>
+          </div>
+        </nav>
         <div className="modal-content">
           <div className="row">
             <div className="input-field">

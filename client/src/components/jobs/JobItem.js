@@ -1,8 +1,11 @@
 import React, { useContext, useEffect, Fragment } from "react";
-import JobContext from "../../context/task/taskContext";
+import TaskContext from "../../context/task/taskContext";
+import JobContext from "../../context/job/jobContext";
 
 export const JobItem = ({ job }) => {
+  const taskContext = useContext(TaskContext);
   const jobContext = useContext(JobContext);
+
   const {
     problem,
     customer,
@@ -12,23 +15,34 @@ export const JobItem = ({ job }) => {
     date,
     _id,
   } = job;
-  const { tasks, getTasks, loading, timepass } = jobContext;
+  const { tasks, getTasks, loading, timepass } = taskContext;
+  const { setEditJob, setLoading, setTask } = jobContext;
 
   useEffect(() => {
     getTasks();
     //eslint-disable-next-line
   }, []);
 
+  let serialNumber = "";
+  let problems = "";
+
+  const onClick = () => {
+    setTask(problems, serialNumber, job);
+    setLoading();
+    setEditJob(_id);
+  };
+
   //Append job number
   if (loading || tasks === null) {
     return <div className="container">loading</div>;
   } else {
-    let problems = "";
     tasks.map((task) => {
       if (problems === "" && task.job === _id) {
         problems = problems.concat(task.jobNumber);
+        serialNumber = serialNumber.concat(task.SerialNumber);
       } else if (task.job === _id) {
         problems = problems.concat(`, ${task.jobNumber}`);
+        serialNumber = serialNumber.concat(`, ${task.SerialNumber}`);
       }
     });
 
@@ -56,32 +70,35 @@ export const JobItem = ({ job }) => {
 
     return (
       <Fragment>
-        <div className="container">
-          <div className="row">
-            <div className="col s12">
-              <div className="card horizontal">
-                <div className="card-image">
-                  <div className="center" style={{ padding: "30px" }}>
-                    <i className={textColor2}></i>
-                    <h5>{timePass2} days</h5>
-                    <div className="progress grey lighten-1">
-                      <div
-                        className={textColor}
-                        style={{ width: `${timePassRate}%` }}
-                      ></div>
-                    </div>
-                  </div>
+        <div className="col m6 s12">
+          <div className="card horizontal">
+            <div className="card-image">
+              <div className="center" style={{ padding: "30px" }}>
+                <i className={textColor2}></i>
+                <h5>{timePass2} days</h5>
+                <div className="progress grey lighten-1">
+                  <div
+                    className={textColor}
+                    style={{ width: `${timePassRate}%` }}
+                  ></div>
                 </div>
-                <div className="card-stacked">
-                  <div className="card-content">
-                    <span className="card-title">{problems}</span>
-                    <br />
-                    <p>
-                      {problem} - {customer} ({contactPerson})
-                    </p>
-                    <p>{otherReference}</p>
-                  </div>
-                </div>
+              </div>
+            </div>
+            <div className="card-stacked">
+              <div className="card-content">
+                <span className="card-title">{problems}</span>
+                <br />
+                <p>
+                  {problem} - {customer} ({contactPerson})
+                </p>
+                <p>{otherReference}</p>
+                <a
+                  href="#edit-job-modal"
+                  className="btn-floating btn-mid waves-effect waves-light blue secondary-content modal-trigger"
+                  onClick={onClick}
+                >
+                  <i className="fas fa-pen"></i>{" "}
+                </a>
               </div>
             </div>
           </div>

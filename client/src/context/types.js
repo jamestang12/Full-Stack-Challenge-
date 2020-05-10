@@ -13,3 +13,5 @@ export const SET_LOADING = "SET_LOADING";
 export const SET_CURRENT_TASK = "SET_CURRENT_TASK";
 export const UPDATE_CURRENT_TASK = "UPDATE_CURRENT_TASK";
 export const SET_PAGE = "SET_PAGE";
+export const EDIT_JOB = "EDIT_JOB";
+export const EDIT_TASK = "EDIT_TASK";

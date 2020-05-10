@@ -57,6 +57,20 @@ router.get("/inProcess", async (req, res) => {
   }
 });
 
+// @route   GET api/jobs/:id
+// @desc    Get jobs by id
+// @access  Public
+router.get("/:id", async (req, res) => {
+  try {
+    const jobs = await Jobs.findById(req.params.id);
+    if (!jobs) return res.status(404).json({ msg: "Job not found" });
+    res.json(jobs);
+  } catch (err) {
+    console.log({ data: jobs });
+    res.status(500).send("Server Error");
+  }
+});
+
 // @route   GET api/jobs/completed
 // @desc    Get jobs that are completed
 // @access  Public
@@ -70,14 +84,43 @@ router.get("/completed", async (req, res) => {
   }
 });
 
+// @route   PUT api/jobs/update/:id
+// @desc    Update jobs that are completed
+// @access  Public
+router.put("/update/:id", async (req, res) => {
+  const { duration, problem, startDate, serverType, customer } = req.body;
+
+  //Build task object
+  const jobsFields = {};
+  if (duration) jobsFields.duration = duration;
+  if (problem) jobsFields.problem = problem;
+  if (startDate) jobsFields.startDate = startDate.getTime();
+  if (serverType) jobsFields.serverType = serverType;
+  if (customer) jobsFields.customer = customer;
+
+  try {
+    let job = await Jobs.findById(req.params.id);
+    if (!job) return res.status(404).json({ msg: "Job not not be found" });
+    job = await Jobs.findByIdAndUpdate(
+      req.params.id,
+      { $set: jobsFields },
+      { new: true }
+    );
+    res.json(job);
+  } catch (err) {
+    console.log(err);
+    res.status(500).send("Server Error");
+  }
+});
+
 // @route   PUT api/jobs/:id
 // @desc    Update job state
 // @access  Public
 router.put("/:id", async (req, res) => {
   try {
-    let job = await Jobs.findById(req.params.id);
-    if (!job) return res.status(404).json({ msg: "Job not found" });
-    job = await Jobs.findByIdAndUpdate(
+    let job = await Jobs.findOne({ _id: req.params.id });
+    if (!job) return res.status(404).json({ msg: "Job not not be found" });
+    job = await Jobs.findOneAndUpdate(
       { _id: req.params.id },
       { completed: true }
     );
