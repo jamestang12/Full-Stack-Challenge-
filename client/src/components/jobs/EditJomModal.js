@@ -1,18 +1,27 @@
-import React, { useContext } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import EditTaskModal from "./EditTaskModal";
 import $ from "jquery";
 import { findDOMNode } from "react-dom";
 import JobContext from "../../context/job/jobContext";
 import Preloader from "../layout/Preloading";
 import Moment from "react-moment";
+import M from "materialize-css/dist/js/materialize.min.js";
 
 export const EditJomModal = () => {
   const jobContext = useContext(JobContext);
   const { currentJob, loading, editTask, serialNumber, jobData } = jobContext;
+  const [serverType, setServerType] = useState("");
+  const [date, setDate] = useState("");
+  const [displayStartTime, setDisplayStartTime] = useState("");
+  const [process, setProcess] = useState("");
 
-  let test = new Date(jobData.date);
-  test = test.getTime();
-  console.log(`tttttttt ${test}`);
+  //   let test = new Date(jobData.date);
+  //   test = test.getTime();
+  //   console.log(`tttttttt ${test}`);
+
+  const click2 = () => {
+    console.log("test");
+  };
 
   return (
     <div id="edit-job-modal" className="modal">
@@ -29,7 +38,7 @@ export const EditJomModal = () => {
             </a>
           </li>
           <li className="tab col s4">
-            <a href="#tab2" id="tabTwo">
+            <a href="#tab2" id="tabTwo" onClick={click2}>
               <i className="fas fa-tasks"> </i> Edit & Add Task
             </a>
           </li>
@@ -64,6 +73,41 @@ export const EditJomModal = () => {
                     </strong>
                   </span>
                 </p>
+                <div className="row">
+                  <br />
+                  {jobData.serverType === null ? (
+                    <p>Not server type been seleted</p>
+                  ) : (
+                    <p>Server type: {jobData.serverType}</p>
+                  )}
+                  <div className="input-field">
+                    <select
+                      name="serverType"
+                      value={serverType}
+                      className="browser-default"
+                      onChange={(e) => setServerType(e.target)}
+                    >
+                      <option value="" disabled>
+                        Selete new server type
+                      </option>
+                      <option value="type1">Type 1</option>
+                      <option value="type2">Type 2</option>
+                      <option value="type3">Type 3</option>
+                      <option value="type4">Type 4</option>
+                    </select>
+                  </div>
+                  <p>
+                    Start Time: <Moment>{jobData.startDate}</Moment>
+                  </p>
+                  <label for="startTime">Set new due time</label>
+                  <input
+                    type="datetime-local"
+                    name="date"
+                    id="startTime"
+                    value={date}
+                    onChange={(e) => setDate(e.target.value)}
+                  />
+                </div>
               </div>
 
               <div className="progress">
