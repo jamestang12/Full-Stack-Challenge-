@@ -8,16 +8,36 @@ import {
   EDIT_JOB,
   EDIT_TASK,
   COMPLETED_LOADING,
+  SET_MATERIALS,
+  SET_MATERIALS_LOADING,
 } from "../types";
 
 export default (state, action) => {
   switch (action.type) {
+    case SET_MATERIALS_LOADING:
+      return {
+        ...state,
+        materialLoader: action.payload,
+      };
     case COMPLETED_LOADING:
       return {
         ...state,
         loading3: true,
       };
     case GET_COMPLETED:
+      return {
+        ...state,
+        loading3: false,
+        jobsInCompleted: action.payload,
+      };
+    case SET_MATERIALS:
+      {
+        return {
+          ...state,
+          materials: action.payload,
+          materialLoader: false,
+        };
+      }
       return {
         ...state,
         jobsInCompleted: action.payload,
@@ -28,6 +48,10 @@ export default (state, action) => {
         ...state,
         jobsInProcess: action.payload,
         loading: false,
+      };
+    case ERROR:
+      return {
+        state,
       };
     case ADD_JOB:
       return {

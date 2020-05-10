@@ -14,5 +14,6 @@ app.get("/", (req, res) => res.send("Welcome to TaskFlow API"));
 //Define Routes
 app.use("/api/jobs", require("./routes/jobs"));
 app.use("/api/tasks", require("./routes/tasks"));
+app.use("/api/materials", require("./routes/materials"));
 
 app.listen(PORT, () => console.log(`Server started on port ${PORT}`));

@@ -16,7 +16,14 @@ export const JobItem = ({ job }) => {
     _id,
   } = job;
   const { tasks, getTasks, loading, timepass } = taskContext;
-  const { setEditJob, setLoading, setTask, clearState } = jobContext;
+  const {
+    setEditJob,
+    setLoading,
+    setTask,
+    clearState,
+    setMaterials,
+    setMaterialLoader,
+  } = jobContext;
 
   useEffect(() => {
     getTasks();
@@ -31,6 +38,8 @@ export const JobItem = ({ job }) => {
     setLoading();
     setEditJob(_id);
     clearState(_id);
+    setMaterialLoader(true);
+    setMaterials(_id);
   };
 
   //Append job number

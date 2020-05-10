@@ -100,7 +100,7 @@ router.put("/update/:id", async (req, res) => {
 
   try {
     let job = await Jobs.findById(req.params.id);
-    if (!job) return res.status(404).json({ msg: "Job not not be found" });
+    if (!job) return res.status(404).json({ msg: "Job not found" });
     job = await Jobs.findByIdAndUpdate(
       req.params.id,
       { $set: jobsFields },

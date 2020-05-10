@@ -1,6 +1,5 @@
 const express = require("express");
 const router = express.Router();
-const Jobs = require("../models/Jobs");
 const Tasks = require("../models/Tasks");
 
 // @route   POST api/tasks/:id

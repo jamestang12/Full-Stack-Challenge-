@@ -12,6 +12,8 @@ import {
   EDIT_TASK,
   CLEAR_JOB_EDIT_STATE,
   COMPLETED_LOADING,
+  SET_MATERIALS,
+  SET_MATERIALS_LOADING,
 } from "../types";
 import axios from "axios";
 
@@ -19,7 +21,7 @@ const JobState = (props) => {
   const initialState = {
     loading: true,
     jobsInProcess: null,
-    jobsInCompleted: null,
+    jobsInCompleted: [],
     tasks: null,
     timepass: null,
     loading2: false,
@@ -29,6 +31,8 @@ const JobState = (props) => {
     serialNumber: [],
     jobData: [],
     loading3: true,
+    materialLoader: true,
+    materials: null,
   };
 
   const [state, dispatch] = useReducer(jobReducer, initialState);
@@ -45,6 +49,30 @@ const JobState = (props) => {
       dispatch({
         type: ERROR,
         payload: err,
+      });
+    }
+  };
+
+  //Set material loader
+  const setMaterialLoader = (value) => {
+    dispatch({
+      type: SET_MATERIALS_LOADING,
+      payload: value,
+    });
+  };
+
+  //Set materials
+  const setMaterials = async (id) => {
+    try {
+      const res = await axios.get(`/api/materials/${id}`);
+      dispatch({
+        type: SET_MATERIALS,
+        payload: res.data,
+      });
+    } catch (error) {
+      dispatch({
+        type: ERROR,
+        payload: error,
       });
     }
   };
@@ -151,6 +179,8 @@ const JobState = (props) => {
   return (
     <JobContext.Provider
       value={{
+        materialLoader: state.materialLoader,
+        materials: state.materials,
         loading: state.loading,
         jobsInCompleted: state.jobsInCompleted,
         jobsInProcess: state.jobsInProcess,
@@ -170,6 +200,8 @@ const JobState = (props) => {
         setTask,
         clearState,
         setCompleteLoader,
+        setMaterials,
+        setMaterialLoader,
       }}
     >
       {props.children}

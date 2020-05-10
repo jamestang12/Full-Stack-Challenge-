@@ -15,7 +15,8 @@ export const EditJomModal = () => {
     editTask,
     serialNumber,
     jobData,
-    editJobStabe,
+    materialLoader,
+    materials,
   } = jobContext;
   const [serverType, setServerType] = useState("");
   const [date, setDate] = useState("");
@@ -24,8 +25,15 @@ export const EditJomModal = () => {
   }, []);
 
   useEffect(() => {
-    setDate("");
+    if (currentJob._id !== null) {
+      setDate("");
+      setServerType("");
+    }
   }, [currentJob]);
+
+  useEffect(() => {
+    console.log(`materials ${materials}`);
+  }, [materialLoader]);
   //   let test = new Date(jobData.date);
   //   test = test.getTime();
   //   console.log(`tttttttt ${test}`);
@@ -137,11 +145,59 @@ export const EditJomModal = () => {
           className="col s12"
           style={{ padding: "25px 35px 0px 35px" }}
         >
-          <h3>Tab 2</h3>
-          <p>Lorem ipsum dolor sit amet consecttiur daiosicpting elit</p>
-          <div className="progress">
-            <div className="determinate blue" style={{ width: "66%" }}></div>
-          </div>
+          {loading || materialLoader ? (
+            <Preloader />
+          ) : (
+            <div>
+              <div>
+                <h4> {editTask}</h4>
+                <br />
+                <p>
+                  {jobData.problem} - {jobData.customer} (
+                  {jobData.contactPerson})
+                </p>
+                <p>SN: {serialNumber}</p>
+                <p>
+                  Ref No: {jobData.otherReference}{" "}
+                  <span className="right ">
+                    <strong>
+                      <Moment>{jobData.date}</Moment>
+                    </strong>
+                  </span>
+                </p>
+                <div className="row">
+                  <br />
+                  <ul className="collection with-header">
+                    <li className="collection-header">
+                      <h4>
+                        List of materials
+                        <a
+                          href="#add-material-modal"
+                          className="btn-floating btn-mid waves-effect waves-light red secondary-content modal-trigger"
+                        >
+                          <i className="fas fa-plus"></i>
+                        </a>
+                      </h4>
+                    </li>
+                    <li>
+                      {materials.length === 0 ? (
+                        <p className="center">No material to show.......</p>
+                      ) : (
+                        <p>Hi</p>
+                      )}
+                    </li>
+                  </ul>
+
+                  <div className="progress">
+                    <div
+                      className="determinate blue"
+                      style={{ width: "66%" }}
+                    ></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
         <div
           id="tab3"
