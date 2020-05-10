@@ -7,10 +7,22 @@ import {
   SET_LOADING,
   EDIT_JOB,
   EDIT_TASK,
+  COMPLETED_LOADING,
 } from "../types";
 
 export default (state, action) => {
   switch (action.type) {
+    case COMPLETED_LOADING:
+      return {
+        ...state,
+        loading3: true,
+      };
+    case GET_COMPLETED:
+      return {
+        ...state,
+        jobsInCompleted: action.payload,
+        loading3: false,
+      };
     case GET_PROGRESS:
       return {
         ...state,

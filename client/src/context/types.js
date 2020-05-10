@@ -15,3 +15,6 @@ export const UPDATE_CURRENT_TASK = "UPDATE_CURRENT_TASK";
 export const SET_PAGE = "SET_PAGE";
 export const EDIT_JOB = "EDIT_JOB";
 export const EDIT_TASK = "EDIT_TASK";
+export const SET_EDIT_JOB_STATE = "SET_EDIT_JOB_STATE";
+export const CLEAR_JOB_EDIT_STATE = "CLEAR_JOB_EDIT_STATE";
+export const COMPLETED_LOADING = "COMPLETED_LOADING";

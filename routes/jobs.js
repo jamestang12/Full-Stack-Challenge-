@@ -52,7 +52,20 @@ router.get("/inProcess", async (req, res) => {
     const jobs = await Jobs.find({ completed: false });
     res.json(jobs);
   } catch (err) {
-    console.log({ data: jobs });
+    console.log(err);
+    res.status(500).send("Server Error");
+  }
+});
+
+// @route   GET api/jobs/completed
+// @desc    Get jobs that are completed
+// @access  Public
+router.get("/completed", async (req, res) => {
+  try {
+    const jobs = await Jobs.find({ completed: true });
+    res.json(jobs);
+  } catch (err) {
+    console.log(err);
     res.status(500).send("Server Error");
   }
 });
@@ -67,19 +80,6 @@ router.get("/:id", async (req, res) => {
     res.json(jobs);
   } catch (err) {
     console.log({ data: jobs });
-    res.status(500).send("Server Error");
-  }
-});
-
-// @route   GET api/jobs/completed
-// @desc    Get jobs that are completed
-// @access  Public
-router.get("/completed", async (req, res) => {
-  try {
-    const jobs = await Jobs.find({ completed: true });
-    res.json(jobs);
-  } catch (err) {
-    console.log(err);
     res.status(500).send("Server Error");
   }
 });

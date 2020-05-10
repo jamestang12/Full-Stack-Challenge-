@@ -10,6 +10,8 @@ import {
   SET_PAGE,
   EDIT_JOB,
   EDIT_TASK,
+  CLEAR_JOB_EDIT_STATE,
+  COMPLETED_LOADING,
 } from "../types";
 import axios from "axios";
 
@@ -26,6 +28,7 @@ const JobState = (props) => {
     editTask: [],
     serialNumber: [],
     jobData: [],
+    loading3: true,
   };
 
   const [state, dispatch] = useReducer(jobReducer, initialState);
@@ -36,6 +39,29 @@ const JobState = (props) => {
       const res = await axios.get("/api/jobs/inProcess");
       dispatch({
         type: GET_PROGRESS,
+        payload: res.data,
+      });
+    } catch (err) {
+      dispatch({
+        type: ERROR,
+        payload: err,
+      });
+    }
+  };
+
+  const setCompleteLoader = (value) => {
+    dispatch({
+      type: COMPLETED_LOADING,
+      payload: value,
+    });
+  };
+
+  //Get jobs that are completed
+  const getCompletedJobs = async () => {
+    try {
+      const res = await axios.get("/api/jobs/completed");
+      dispatch({
+        type: GET_COMPLETED,
         payload: res.data,
       });
     } catch (err) {
@@ -99,6 +125,20 @@ const JobState = (props) => {
     }
   };
 
+  const clearState = (id) => {
+    if (state.currentJob.length === 0) {
+      dispatch({
+        type: CLEAR_JOB_EDIT_STATE,
+      });
+    }
+
+    if (state.currentJob._id !== id) {
+      dispatch({
+        type: CLEAR_JOB_EDIT_STATE,
+      });
+    }
+  };
+
   const setTask = (value, serialNumber, data) => {
     dispatch({
       type: EDIT_TASK,
@@ -121,12 +161,15 @@ const JobState = (props) => {
         editTask: state.editTask,
         serialNumber: state.serialNumber,
         jobData: state.jobData,
+        loading3: state.loading3,
         getJobsInProcess,
-        addJobInProcess,
+        getCompletedJobs,
         setLoading,
         setPage,
         setEditJob,
         setTask,
+        clearState,
+        setCompleteLoader,
       }}
     >
       {props.children}

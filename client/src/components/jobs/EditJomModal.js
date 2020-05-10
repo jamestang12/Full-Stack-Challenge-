@@ -9,19 +9,33 @@ import M from "materialize-css/dist/js/materialize.min.js";
 
 export const EditJomModal = () => {
   const jobContext = useContext(JobContext);
-  const { currentJob, loading, editTask, serialNumber, jobData } = jobContext;
+  const {
+    currentJob,
+    loading,
+    editTask,
+    serialNumber,
+    jobData,
+    editJobStabe,
+  } = jobContext;
   const [serverType, setServerType] = useState("");
   const [date, setDate] = useState("");
-  const [displayStartTime, setDisplayStartTime] = useState("");
-  const [process, setProcess] = useState("");
+  useEffect(() => {
+    M.AutoInit();
+  }, []);
 
+  useEffect(() => {
+    setDate("");
+  }, [currentJob]);
   //   let test = new Date(jobData.date);
   //   test = test.getTime();
   //   console.log(`tttttttt ${test}`);
 
   const click2 = () => {
-    console.log("test");
+    console.log(`date ${date}`);
+    console.log(`serverType ${serverType}`);
   };
+
+  const click3 = () => {};
 
   return (
     <div id="edit-job-modal" className="modal">
@@ -43,7 +57,7 @@ export const EditJomModal = () => {
             </a>
           </li>
           <li className="tab col s4">
-            <a href="#tab3" id="tabThree">
+            <a href="#tab3" id="tabThree" onClick={click3}>
               <i className="fas fa-paper-plane"> </i> Save & Submit
             </a>
           </li>
@@ -76,7 +90,7 @@ export const EditJomModal = () => {
                 <div className="row">
                   <br />
                   {jobData.serverType === null ? (
-                    <p>Not server type been seleted</p>
+                    <p>No server type been seleted</p>
                   ) : (
                     <p>Server type: {jobData.serverType}</p>
                   )}
@@ -85,7 +99,7 @@ export const EditJomModal = () => {
                       name="serverType"
                       value={serverType}
                       className="browser-default"
-                      onChange={(e) => setServerType(e.target)}
+                      onChange={(e) => setServerType(e.target.value)}
                     >
                       <option value="" disabled>
                         Selete new server type
@@ -107,14 +121,13 @@ export const EditJomModal = () => {
                     value={date}
                     onChange={(e) => setDate(e.target.value)}
                   />
+                  <div className="progress">
+                    <div
+                      className="determinate blue"
+                      style={{ width: "33%" }}
+                    ></div>
+                  </div>
                 </div>
-              </div>
-
-              <div className="progress">
-                <div
-                  className="determinate blue"
-                  style={{ width: "33%" }}
-                ></div>
               </div>
             </div>
           )}

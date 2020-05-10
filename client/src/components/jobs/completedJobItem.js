@@ -2,7 +2,7 @@ import React, { useContext, useEffect, Fragment } from "react";
 import TaskContext from "../../context/task/taskContext";
 import JobContext from "../../context/job/jobContext";
 
-export const JobItem = ({ job }) => {
+export const CompletedItem = ({ job }) => {
   const taskContext = useContext(TaskContext);
   const jobContext = useContext(JobContext);
 
@@ -26,17 +26,11 @@ export const JobItem = ({ job }) => {
   let serialNumber = "";
   let problems = "";
 
-  const onClick = () => {
-    setTask(problems, serialNumber, job);
-    setLoading();
-    setEditJob(_id);
-    clearState(_id);
-  };
-
   //Append job number
   if (loading || tasks === null) {
     return <div className="container">loading</div>;
   } else {
+    console.log(tasks);
     tasks.map((task) => {
       if (problems === "" && task.job === _id) {
         problems = problems.concat(task.jobNumber);
@@ -47,40 +41,18 @@ export const JobItem = ({ job }) => {
       }
     });
 
-    //Calculat duration
-    const currentDate = new Date();
-    const dueDate = new Date(date);
-    let timePass2 = dueDate.getTime() - currentDate.getTime();
-    let timePassRate = Math.round((timePass2 / duration) * 100);
-    console.log(timePassRate);
-    timePass2 = Math.round(timePass2 / 1000 / 60 / 60 / 24);
-
-    //Set color
-    let textColor = "determinate blue lighten-1";
-    let textColor2 = "fas fa-clock medium blue-text";
-
-    if (timepass < 0) {
-      timepass = 0;
-      timePassRate = 0;
-    }
-
-    if (timePassRate < 25 || timePass2 < 0) {
-      textColor = "determinate red lighten-1";
-      textColor2 = "fas fa-clock medium red-text";
-    }
-
     return (
       <Fragment>
-        <div className="col s12">
+        <div className="col m6 s12">
           <div className="card horizontal">
             <div className="card-image">
               <div className="center" style={{ padding: "30px" }}>
-                <i className={textColor2}></i>
-                <h5>{timePass2} days</h5>
+                <i className="fas fa-check-circle green-text medium"></i>
+                <h5>Job Completed</h5>
                 <div className="progress grey lighten-1">
                   <div
-                    className={textColor}
-                    style={{ width: `${timePassRate}%` }}
+                    className="determinate green lighten-1"
+                    style={{ width: `100%` }}
                   ></div>
                 </div>
               </div>
@@ -93,13 +65,6 @@ export const JobItem = ({ job }) => {
                   {problem} - {customer} ({contactPerson})
                 </p>
                 <p>{otherReference}</p>
-                <a
-                  href="#edit-job-modal"
-                  className="btn-floating btn-mid waves-effect waves-light blue secondary-content modal-trigger"
-                  onClick={onClick}
-                >
-                  <i className="fas fa-pen"></i>{" "}
-                </a>
               </div>
             </div>
           </div>
@@ -109,4 +74,4 @@ export const JobItem = ({ job }) => {
   }
 };
 
-export default JobItem;
+export default CompletedItem;

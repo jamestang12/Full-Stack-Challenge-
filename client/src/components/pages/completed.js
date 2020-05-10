@@ -1,5 +1,7 @@
-import React, { useEffect, useContext } from "react";
+import React, { useEffect, useContext, Fragment } from "react";
 import JobContext from "../../context/job/jobContext";
+import CompNav from "../layout/CompletedNavbar";
+import ComJobs from "../jobs/completedJob";
 
 export const Completed = () => {
   const jobContext = useContext(JobContext);
@@ -7,7 +9,12 @@ export const Completed = () => {
   useEffect(() => {
     setPage("completed");
   }, []);
-  return <div>completed</div>;
+  return (
+    <Fragment>
+      <CompNav />
+      <ComJobs />
+    </Fragment>
+  );
 };
 
 export default Completed;
