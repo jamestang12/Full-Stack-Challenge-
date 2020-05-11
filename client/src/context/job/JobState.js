@@ -21,13 +21,14 @@ import {
   SAVE_UPDATE,
   SAVE_LOADER,
   SAVE_SERVERTYPE,
-  UPDATE_CURRENT_ITEM,
   UPDATE_DATE,
+  ADD_REMOVIE_LIST,
 } from "../types";
 import axios from "axios";
 
 const JobState = (props) => {
   const initialState = {
+    removeMaterialList: [],
     loading: true,
     jobsInProcess: null,
     jobsInCompleted: [],
@@ -58,6 +59,13 @@ const JobState = (props) => {
   const deleteCurrentMaterial = (value) => {
     dispatch({
       type: DELETE_CURRENT_MATERIAL,
+      payload: value,
+    });
+  };
+
+  const addRemoveList = (value) => {
+    dispatch({
+      type: ADD_REMOVIE_LIST,
       payload: value,
     });
   };
@@ -97,6 +105,56 @@ const JobState = (props) => {
         dispatch({
           type: UPDATE_DATE,
           payload: jobValue.date,
+        });
+      }
+
+      try {
+        if (state.orgMaterials.length === 0) {
+          if (state.materials.length !== 0) {
+            await Promise.all(
+              state.materials.map(async (material) => {
+                await axios.post(`api/materials/${id}`, material, config);
+              })
+            );
+          }
+        } else if (state.orgMaterials.length !== 0) {
+          const oldMaterial = [];
+          if (state.materials.length !== 0) {
+            for (let i = 0; i < state.materials.length; i++) {
+              for (let x = 0; x < state.orgMaterials.length; x++) {
+                if (state.materials[i]._id === state.orgMaterials[x]._id) {
+                  oldMaterial.push(state.materials[i]);
+                  state.materials.splice(i, 1);
+                }
+              }
+            }
+          }
+          await Promise.all(
+            state.materials.map(async (material) => {
+              await axios.post(`api/materials/${id}`, material, config);
+            })
+          );
+          await Promise.all(
+            oldMaterial.map(async (material) => {
+              await axios.put(
+                `api/materials/${material._id}`,
+                material,
+                config
+              );
+            })
+          );
+          if (state.materialRemove.length !== 0) {
+            await Promise.all(
+              state.materialRemove.map(async (material) => {
+                await axios.delete(`api/materials/${material._id}`);
+              })
+            );
+          }
+        }
+      } catch (error) {
+        dispatch({
+          type: ERROR,
+          payload: error,
         });
       }
 
@@ -287,6 +345,7 @@ const JobState = (props) => {
   return (
     <JobContext.Provider
       value={{
+        removeMaterialList: state.removeMaterialList,
         jobDataDay: state.jobDataDay,
         jobDataDate: state.jobDataDate,
         jobDataServerTye: state.jobDataServerTye,
@@ -308,9 +367,11 @@ const JobState = (props) => {
         jobData: state.jobData,
         loading3: state.loading3,
         materialCurrentState: state.materialCurrentState,
+        removeMaterial: state.removeMaterial,
         getJobsInProcess,
         getCompletedJobs,
         setLoading,
+        addRemoveList,
         setPage,
         setEditJob,
         setTask,

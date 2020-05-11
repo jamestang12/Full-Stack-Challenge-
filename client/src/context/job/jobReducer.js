@@ -19,10 +19,16 @@ import {
   SAVE_SERVERTYPE,
   UPDATE_DATE,
   UPDATE_CURRENT_ITEM,
+  ADD_REMOVIE_LIST,
 } from "../types";
 
 export default (state, action) => {
   switch (action.type) {
+    case ADD_REMOVIE_LIST:
+      return {
+        ...state,
+        materialRemove: [action.payload, ...state.materialRemove],
+      };
     case UPDATE_MATERIAL:
       return {
         ...state,
@@ -46,7 +52,6 @@ export default (state, action) => {
         materials: state.materials.filter(
           (material) => material._id !== action.payload._id
         ),
-        materialRemove: [action.payload, ...state.materialRemove],
       };
     case SET_MATERIALS_LOADING:
       return {

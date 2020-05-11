@@ -5,11 +5,13 @@ export const MaterialItem = ({ material }) => {
   const jobContext = useContext(JobContext);
   const {
     deleteCurrentMaterial,
-    materialRemove,
+    addRemoveList,
     setCurrentMaterial,
   } = jobContext;
   const onDelete = () => {
     deleteCurrentMaterial(material);
+    addRemoveList(material);
+    console.log(material);
   };
 
   const onEdit = () => {

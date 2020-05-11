@@ -25,6 +25,7 @@ export const EditJomModal = () => {
     setSaveLoder,
     saveLoader,
     getJobsInProcess,
+    materialRemove,
   } = jobContext;
   const [serverType, setServerType] = useState("");
   const [date, setDate] = useState("");
@@ -32,8 +33,6 @@ export const EditJomModal = () => {
   useEffect(() => {
     M.AutoInit();
   }, []);
-
-  console.log(`ssssss   ${jobDataServerTye}`);
 
   useEffect(() => {
     if (currentJob._id !== null) {
@@ -55,9 +54,6 @@ export const EditJomModal = () => {
   useEffect(() => {
     console.log(`materials ${materials}`);
   }, [materialLoader]);
-  //   let test = new Date(jobData.date);
-  //   test = test.getTime();
-  //   console.log(`tttttttt ${test}`);
 
   const click2 = () => {
     console.log(`date ${date}`);
@@ -72,6 +68,8 @@ export const EditJomModal = () => {
     };
 
     M.toast({ html: "Saving....." });
+    //deleteMaterial();
+    console.log(`ssss222ss${materialRemove}`);
     saveUpdate(newJobUpdate, jobData._id);
     //getJobsInProcess();
   };
