@@ -14,6 +14,10 @@ import {
   COMPLETED_LOADING,
   SET_MATERIALS,
   SET_MATERIALS_LOADING,
+  DELETE_CURRENT_MATERIAL,
+  EDIT_MATERIAL,
+  UPDATE_MATERIAL,
+  ADD_MATERIAL,
 } from "../types";
 import axios from "axios";
 
@@ -32,10 +36,30 @@ const JobState = (props) => {
     jobData: [],
     loading3: true,
     materialLoader: true,
-    materials: null,
+    orgMaterials: [],
+    materials: [],
+    materialRemove: [],
+    materialCurrentState: [],
+    jobDataId: null,
   };
 
   const [state, dispatch] = useReducer(jobReducer, initialState);
+
+  //Delete current material
+  const deleteCurrentMaterial = (value) => {
+    dispatch({
+      type: DELETE_CURRENT_MATERIAL,
+      payload: value,
+    });
+  };
+
+  //Add material to current material state
+  const addCurrentMaterial = (value) => {
+    dispatch({
+      type: ADD_MATERIAL,
+      payload: value,
+    });
+  };
 
   //Get jobs in process
   const getJobsInProcess = async () => {
@@ -98,6 +122,14 @@ const JobState = (props) => {
         payload: err,
       });
     }
+  };
+
+  //Update material current state
+  const updateCurrentMaterial = (value) => {
+    dispatch({
+      type: UPDATE_MATERIAL,
+      payload: value,
+    });
   };
 
   //Set loading
@@ -176,9 +208,19 @@ const JobState = (props) => {
     });
   };
 
+  const setCurrentMaterial = (value) => {
+    dispatch({
+      type: EDIT_MATERIAL,
+      payload: value,
+    });
+  };
+
   return (
     <JobContext.Provider
       value={{
+        jobDataId: state.jobDataId,
+        orgMaterials: state.orgMaterials,
+        materialRemove: state.materialRemove,
         materialLoader: state.materialLoader,
         materials: state.materials,
         loading: state.loading,
@@ -192,6 +234,7 @@ const JobState = (props) => {
         serialNumber: state.serialNumber,
         jobData: state.jobData,
         loading3: state.loading3,
+        materialCurrentState: state.materialCurrentState,
         getJobsInProcess,
         getCompletedJobs,
         setLoading,
@@ -202,6 +245,11 @@ const JobState = (props) => {
         setCompleteLoader,
         setMaterials,
         setMaterialLoader,
+        deleteCurrentMaterial,
+        addCurrentMaterial,
+        setCurrentMaterial,
+        updateCurrentMaterial,
+        addJobInProcess,
       }}
     >
       {props.children}

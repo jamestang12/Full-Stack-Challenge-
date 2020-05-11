@@ -6,6 +6,8 @@ import AddJobModal from "../jobs/AddJobModal";
 import M from "materialize-css/dist/js/materialize.min.js";
 import AddTaskModal from "../jobs/AddTaskModal";
 import EditTaskModal from "../jobs/EditTaskModal";
+import EditMaterial from "../jobs/EditMaterial";
+import AddMaterialModal from "../jobs/AddMaterialModal";
 import JobContext from "../../context/job/jobContext";
 import { EditJomModal } from "../jobs/EditJomModal";
 
@@ -28,6 +30,8 @@ export const Progess = () => {
       <AddJobModal />
       <EditTaskModal />
       <AddTaskModal />
+      <AddMaterialModal />
+      <EditMaterial />
     </Fragment>
   );
 };

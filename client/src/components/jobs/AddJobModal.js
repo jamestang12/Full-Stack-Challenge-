@@ -148,6 +148,7 @@ export const AddJobModal = () => {
           </div>
 
           <div className="row">
+            <p>Set due date</p>
             <input
               id="party"
               type="datetime-local"

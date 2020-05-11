@@ -6,6 +6,7 @@ import JobContext from "../../context/job/jobContext";
 import Preloader from "../layout/Preloading";
 import Moment from "react-moment";
 import M from "materialize-css/dist/js/materialize.min.js";
+import MaterialItem from "../../components/jobs/materialItem";
 
 export const EditJomModal = () => {
   const jobContext = useContext(JobContext);
@@ -121,7 +122,7 @@ export const EditJomModal = () => {
                   <p>
                     Start Time: <Moment>{jobData.startDate}</Moment>
                   </p>
-                  <label for="startTime">Set new due time</label>
+                  <label htmlFor="startTime">Set new due time</label>
                   <input
                     type="datetime-local"
                     name="date"
@@ -183,7 +184,12 @@ export const EditJomModal = () => {
                       {materials.length === 0 ? (
                         <p className="center">No material to show.......</p>
                       ) : (
-                        <p>Hi</p>
+                        materials.map((material) => (
+                          <MaterialItem
+                            key={material._id}
+                            material={material}
+                          />
+                        ))
                       )}
                     </li>
                   </ul>
@@ -204,11 +210,39 @@ export const EditJomModal = () => {
           className="col s12"
           style={{ padding: "25px 35px 0px 35px" }}
         >
-          <h3>Tab 3</h3>
-          <p>Lorem ipsum dolor sit amet consecttiur daiosicpting elit</p>
-          <div className="progress">
-            <div className="determinate blue" style={{ width: "99%" }}></div>
-          </div>
+          {loading || materialLoader ? (
+            <Preloader />
+          ) : (
+            <div>
+              <div>
+                <h4> {editTask}</h4>
+                <br />
+                <p>
+                  {jobData.problem} - {jobData.customer} (
+                  {jobData.contactPerson})
+                </p>
+                <p>SN: {serialNumber}</p>
+                <p>
+                  Ref No: {jobData.otherReference}{" "}
+                  <span className="right ">
+                    <strong>
+                      <Moment>{jobData.date}</Moment>
+                    </strong>
+                  </span>
+                </p>
+                <div className="row">
+                  <br />
+
+                  <div className="progress">
+                    <div
+                      className="determinate blue"
+                      style={{ width: "97%" }}
+                    ></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>

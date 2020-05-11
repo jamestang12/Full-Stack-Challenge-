@@ -10,14 +10,43 @@ import {
   COMPLETED_LOADING,
   SET_MATERIALS,
   SET_MATERIALS_LOADING,
+  DELETE_CURRENT_MATERIAL,
+  EDIT_MATERIAL,
+  UPDATE_MATERIAL,
+  ADD_MATERIAL,
 } from "../types";
 
 export default (state, action) => {
   switch (action.type) {
+    case UPDATE_MATERIAL:
+      return {
+        ...state,
+        materials: state.materials.map((material) =>
+          material._id === action.payload._id ? action.payload : material
+        ),
+      };
+    case EDIT_MATERIAL:
+      return {
+        ...state,
+        materialCurrentState: action.payload,
+      };
+    case DELETE_CURRENT_MATERIAL:
+      return {
+        ...state,
+        materials: state.materials.filter(
+          (material) => material._id !== action.payload._id
+        ),
+        materialRemove: [action.payload, ...state.materialRemove],
+      };
     case SET_MATERIALS_LOADING:
       return {
         ...state,
         materialLoader: action.payload,
+      };
+    case ADD_MATERIAL:
+      return {
+        ...state,
+        materials: [action.payload, ...state.materials],
       };
     case COMPLETED_LOADING:
       return {
@@ -30,19 +59,15 @@ export default (state, action) => {
         loading3: false,
         jobsInCompleted: action.payload,
       };
-    case SET_MATERIALS:
-      {
-        return {
-          ...state,
-          materials: action.payload,
-          materialLoader: false,
-        };
-      }
+    case SET_MATERIALS: {
       return {
         ...state,
-        jobsInCompleted: action.payload,
-        loading3: false,
+        materials: action.payload,
+        orgMaterials: action.payload,
+        materialLoader: false,
       };
+    }
+
     case GET_PROGRESS:
       return {
         ...state,
@@ -74,6 +99,7 @@ export default (state, action) => {
         ...state,
         currentJob: action.payload,
         loading: false,
+        materialRemove: [],
       };
     case EDIT_TASK:
       return {
@@ -81,6 +107,7 @@ export default (state, action) => {
         editTask: action.payload,
         serialNumber: action.payload2,
         jobData: action.payload3,
+        jobDataId: action.payload3._id,
       };
 
     default:
