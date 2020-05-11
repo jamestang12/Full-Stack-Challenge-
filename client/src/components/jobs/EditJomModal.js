@@ -21,14 +21,20 @@ export const EditJomModal = () => {
     materialLoader,
     materials,
     saveUpdate,
-    orgMaterials,
+    getCompletedJobs,
     setSaveLoder,
     saveLoader,
     getJobsInProcess,
     materialRemove,
+    serverAlert,
+    setMaterialAlert,
+    setServerAlert,
+    materialAlert,
   } = jobContext;
   const [serverType, setServerType] = useState("");
   const [date, setDate] = useState("");
+  const [save, setSave] = useState("");
+  const [submit, setSubmit] = useState("");
   //const [startDate, setStartDate] = useState("");
   useEffect(() => {
     M.AutoInit();
@@ -38,6 +44,8 @@ export const EditJomModal = () => {
     if (currentJob._id !== null) {
       setDate("");
       setServerType("");
+      setSave("save");
+      setSubmit("submit");
 
       //console.log(startDate);
     }
@@ -45,8 +53,9 @@ export const EditJomModal = () => {
 
   useEffect(() => {
     if (saveLoader) {
-      M.toast({ html: "Save completed" });
+      M.toast({ html: "Success" });
       getJobsInProcess();
+      getCompletedJobs();
       setSaveLoder(false);
     }
   }, [saveLoader]);
@@ -70,8 +79,29 @@ export const EditJomModal = () => {
     M.toast({ html: "Saving....." });
     //deleteMaterial();
     console.log(`ssss222ss${materialRemove}`);
-    saveUpdate(newJobUpdate, jobData._id);
+    saveUpdate(newJobUpdate, jobData._id, save);
     //getJobsInProcess();
+  };
+
+  const onEnter = () => {
+    if (jobData.serverType === null) {
+      M.toast({ html: "Please select a server type" });
+      setServerAlert(true);
+    }
+    if (materials.length === 0) {
+      M.toast({ html: "Please add a material" });
+      setMaterialAlert(true);
+    }
+
+    if (materials.length !== 0 && jobData.serverType !== null) {
+      M.toast({ html: "Submitting data...... " });
+      const newSubmit = {
+        date: date,
+        serverType,
+        startDate: jobData.startDate,
+      };
+      saveUpdate(newSubmit, jobData._id, submit);
+    }
   };
 
   return (
@@ -146,6 +176,11 @@ export const EditJomModal = () => {
                       <option value="type3">Type 3</option>
                       <option value="type4">Type 4</option>
                     </select>
+                    {serverAlert ? (
+                      <p className="red center-align">
+                        Please selete server type
+                      </p>
+                    ) : null}
                   </div>
                   <p>
                     Start Time: <Moment>{jobDataDate}</Moment>
@@ -196,6 +231,9 @@ export const EditJomModal = () => {
                 </p>
                 <div className="row">
                   <br />
+                  {materialAlert ? (
+                    <p className="red center-align">Please add material</p>
+                  ) : null}
                   <ul className="collection with-header">
                     <li className="collection-header">
                       <h4>
@@ -267,7 +305,15 @@ export const EditJomModal = () => {
                     >
                       Save
                     </a>
+                    <a
+                      href="#!"
+                      className=" waves-effect blue white-text btn-flat btn btn-extend"
+                      onClick={onEnter}
+                    >
+                      Submit
+                    </a>
                   </div>
+                  <br />
                   <br />
 
                   <div className="progress">

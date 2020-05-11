@@ -20,10 +20,29 @@ import {
   UPDATE_DATE,
   UPDATE_CURRENT_ITEM,
   ADD_REMOVIE_LIST,
+  MATERIAL_ALERT,
+  SERVER_ALERT,
+  CLEAR_JOB_IN_PROCESS,
+  CLEAR_JOB_DATA,
 } from "../types";
 
 export default (state, action) => {
   switch (action.type) {
+    case CLEAR_JOB_DATA:
+      return {
+        ...state,
+        jobData: [],
+      };
+    case MATERIAL_ALERT:
+      return {
+        ...state,
+        serverAlert: action.payload,
+      };
+    case SERVER_ALERT:
+      return {
+        ...state,
+        materialAlert: action.payload,
+      };
     case ADD_REMOVIE_LIST:
       return {
         ...state,
@@ -52,6 +71,11 @@ export default (state, action) => {
         materials: state.materials.filter(
           (material) => material._id !== action.payload._id
         ),
+      };
+    case CLEAR_JOB_IN_PROCESS:
+      return {
+        ...state,
+        jobsInProcess: [],
       };
     case SET_MATERIALS_LOADING:
       return {

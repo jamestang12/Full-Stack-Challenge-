@@ -24,6 +24,8 @@ export const JobItem = ({ job }) => {
     clearState,
     setMaterials,
     setMaterialLoader,
+    setMaterialAlert,
+    setServerAlert,
   } = jobContext;
   useEffect(() => {
     getTasks();
@@ -34,6 +36,8 @@ export const JobItem = ({ job }) => {
   let problems = "";
 
   const onClick = () => {
+    setMaterialAlert(false);
+    setServerAlert(false);
     setTask(problems, serialNumber, job, serverType, date);
     console.log(`testing ${serverType}`);
     setLoading();

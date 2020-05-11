@@ -2,6 +2,8 @@ import React, { useReducer } from "react";
 import JobContext from "./jobContext";
 import jobReducer from "./jobReducer";
 import {
+  MATERIAL_ALERT,
+  SERVER_ALERT,
   ADD_JOB,
   GET_PROGRESS,
   GET_COMPLETED,
@@ -23,6 +25,10 @@ import {
   SAVE_SERVERTYPE,
   UPDATE_DATE,
   ADD_REMOVIE_LIST,
+  CALL_BACL_MATERIAL,
+  CLEAR_CURRENT_TASKS,
+  CLEAR_JOB_IN_PROCESS,
+  CLEAR_JOB_DATA,
 } from "../types";
 import axios from "axios";
 
@@ -30,7 +36,7 @@ const JobState = (props) => {
   const initialState = {
     removeMaterialList: [],
     loading: true,
-    jobsInProcess: null,
+    jobsInProcess: [],
     jobsInCompleted: [],
     tasks: null,
     timepass: null,
@@ -51,6 +57,8 @@ const JobState = (props) => {
     saveLoader: false,
     jobDataDate: [],
     jobDataDay: [],
+    materialAlert: false,
+    serverAlert: false,
   };
 
   const [state, dispatch] = useReducer(jobReducer, initialState);
@@ -71,7 +79,7 @@ const JobState = (props) => {
   };
 
   //Save update
-  const saveUpdate = async (jobValue, id) => {
+  const saveUpdate = async (jobValue, id, state) => {
     const config = {
       headers: {
         "Contact-Type": "application/json",
@@ -109,6 +117,14 @@ const JobState = (props) => {
       }
 
       try {
+        if (state.materialRemove.length !== 0) {
+          await Promise.all(
+            state.materialRemove.map(async (material) => {
+              await axios.delete(`api/materials/${material._id}`);
+            })
+          );
+        }
+
         if (state.orgMaterials.length === 0) {
           if (state.materials.length !== 0) {
             await Promise.all(
@@ -119,18 +135,22 @@ const JobState = (props) => {
           }
         } else if (state.orgMaterials.length !== 0) {
           const oldMaterial = [];
+          const newList = [];
+          for (let i = 0; i < state.materials.length; i++) {
+            newList.push(state.materials[i]);
+          }
           if (state.materials.length !== 0) {
             for (let i = 0; i < state.materials.length; i++) {
               for (let x = 0; x < state.orgMaterials.length; x++) {
                 if (state.materials[i]._id === state.orgMaterials[x]._id) {
                   oldMaterial.push(state.materials[i]);
-                  state.materials.splice(i, 1);
+                  newList.splice(i, 1);
                 }
               }
             }
           }
           await Promise.all(
-            state.materials.map(async (material) => {
+            newList.map(async (material) => {
               await axios.post(`api/materials/${id}`, material, config);
             })
           );
@@ -143,13 +163,6 @@ const JobState = (props) => {
               );
             })
           );
-          if (state.materialRemove.length !== 0) {
-            await Promise.all(
-              state.materialRemove.map(async (material) => {
-                await axios.delete(`api/materials/${material._id}`);
-              })
-            );
-          }
         }
       } catch (error) {
         dispatch({
@@ -157,7 +170,17 @@ const JobState = (props) => {
           payload: error,
         });
       }
+      if (state === "submit") {
+        //await axios.put(`api/jobs/${id}`);
+        dispatch({
+          type: CLEAR_JOB_DATA,
+        });
 
+        dispatch({
+          type: CLEAR_JOB_IN_PROCESS,
+          value: id,
+        });
+      }
       dispatch({
         type: SAVE_UPDATE,
       });
@@ -167,6 +190,22 @@ const JobState = (props) => {
         payload: error,
       });
     }
+  };
+
+  //Set alert for material
+  const setMaterialAlert = (value) => {
+    dispatch({
+      type: MATERIAL_ALERT,
+      payload: value,
+    });
+  };
+
+  //Set alert for server
+  const setServerAlert = (value) => {
+    dispatch({
+      type: SERVER_ALERT,
+      payload: value,
+    });
   };
 
   //Add material to current material state
@@ -345,6 +384,8 @@ const JobState = (props) => {
   return (
     <JobContext.Provider
       value={{
+        serverAlert: state.serverAlert,
+        materialAlert: state.materialAlert,
         removeMaterialList: state.removeMaterialList,
         jobDataDay: state.jobDataDay,
         jobDataDate: state.jobDataDate,
@@ -386,6 +427,8 @@ const JobState = (props) => {
         addJobInProcess,
         saveUpdate,
         setSaveLoder,
+        setServerAlert,
+        setMaterialAlert,
       }}
     >
       {props.children}
