@@ -18,6 +18,11 @@ import {
   EDIT_MATERIAL,
   UPDATE_MATERIAL,
   ADD_MATERIAL,
+  SAVE_UPDATE,
+  SAVE_LOADER,
+  SAVE_SERVERTYPE,
+  UPDATE_CURRENT_ITEM,
+  UPDATE_DATE,
 } from "../types";
 import axios from "axios";
 
@@ -40,7 +45,11 @@ const JobState = (props) => {
     materials: [],
     materialRemove: [],
     materialCurrentState: [],
-    jobDataId: null,
+    jobDataId: [],
+    jobDataServerTye: [],
+    saveLoader: false,
+    jobDataDate: [],
+    jobDataDay: [],
   };
 
   const [state, dispatch] = useReducer(jobReducer, initialState);
@@ -51,6 +60,55 @@ const JobState = (props) => {
       type: DELETE_CURRENT_MATERIAL,
       payload: value,
     });
+  };
+
+  //Save update
+  const saveUpdate = async (jobValue, id) => {
+    const config = {
+      headers: {
+        "Contact-Type": "application/json",
+      },
+    };
+    try {
+      if (jobValue.serverType !== "") {
+        await axios.put(
+          `api/jobs/update/${id}`,
+          { serverType: jobValue.serverType },
+          config
+        );
+        dispatch({
+          type: SAVE_SERVERTYPE,
+          payload: jobValue.serverType,
+        });
+      }
+
+      if (jobValue.date !== "") {
+        const dueDate = jobValue.date;
+        const startDate = jobValue.startDate;
+        const DueDate = new Date(dueDate);
+        const StartDate = new Date(startDate);
+        const duration = DueDate.getTime() - StartDate.getTime();
+        const res = await axios.put(
+          `api/jobs/update/${id}`,
+          { duration: duration, date: dueDate },
+          config
+        );
+
+        dispatch({
+          type: UPDATE_DATE,
+          payload: jobValue.date,
+        });
+      }
+
+      dispatch({
+        type: SAVE_UPDATE,
+      });
+    } catch (error) {
+      dispatch({
+        type: ERROR,
+        payload: error,
+      });
+    }
   };
 
   //Add material to current material state
@@ -122,6 +180,14 @@ const JobState = (props) => {
         payload: err,
       });
     }
+  };
+
+  //Set save loader
+  const setSaveLoder = (value) => {
+    dispatch({
+      type: SAVE_LOADER,
+      payload: value,
+    });
   };
 
   //Update material current state
@@ -199,12 +265,15 @@ const JobState = (props) => {
     }
   };
 
-  const setTask = (value, serialNumber, data) => {
+  const setTask = (value, serialNumber, data, serverType, jobDataDate, day) => {
     dispatch({
       type: EDIT_TASK,
       payload: value,
       payload2: serialNumber,
       payload3: data,
+      payload4: serverType,
+      payload5: jobDataDate,
+      payload6: day,
     });
   };
 
@@ -218,6 +287,10 @@ const JobState = (props) => {
   return (
     <JobContext.Provider
       value={{
+        jobDataDay: state.jobDataDay,
+        jobDataDate: state.jobDataDate,
+        jobDataServerTye: state.jobDataServerTye,
+        saveLoader: state.saveLoader,
         jobDataId: state.jobDataId,
         orgMaterials: state.orgMaterials,
         materialRemove: state.materialRemove,
@@ -250,6 +323,8 @@ const JobState = (props) => {
         setCurrentMaterial,
         updateCurrentMaterial,
         addJobInProcess,
+        saveUpdate,
+        setSaveLoder,
       }}
     >
       {props.children}

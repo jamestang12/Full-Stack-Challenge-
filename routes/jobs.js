@@ -88,15 +88,18 @@ router.get("/:id", async (req, res) => {
 // @desc    Update jobs that are completed
 // @access  Public
 router.put("/update/:id", async (req, res) => {
-  const { duration, problem, startDate, serverType, customer } = req.body;
+  const { duration, problem, startDate, serverType, customer, date } = req.body;
 
   //Build task object
   const jobsFields = {};
   if (duration) jobsFields.duration = duration;
   if (problem) jobsFields.problem = problem;
-  if (startDate) jobsFields.startDate = startDate.getTime();
+  if (startDate) jobsFields.startDate = startDate;
   if (serverType) jobsFields.serverType = serverType;
   if (customer) jobsFields.customer = customer;
+  //if (date) jobsFields.data = req.body.data;
+  if (date) jobsFields.date = date;
+  console.log(jobsFields.date);
 
   try {
     let job = await Jobs.findById(req.params.id);

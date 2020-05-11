@@ -11,6 +11,8 @@ import MaterialItem from "../../components/jobs/materialItem";
 export const EditJomModal = () => {
   const jobContext = useContext(JobContext);
   const {
+    jobDataDate,
+    jobDataServerTye,
     currentJob,
     loading,
     editTask,
@@ -18,19 +20,37 @@ export const EditJomModal = () => {
     jobData,
     materialLoader,
     materials,
+    saveUpdate,
+    orgMaterials,
+    setSaveLoder,
+    saveLoader,
+    getJobsInProcess,
   } = jobContext;
   const [serverType, setServerType] = useState("");
   const [date, setDate] = useState("");
+  //const [startDate, setStartDate] = useState("");
   useEffect(() => {
     M.AutoInit();
   }, []);
+
+  console.log(`ssssss   ${jobDataServerTye}`);
 
   useEffect(() => {
     if (currentJob._id !== null) {
       setDate("");
       setServerType("");
+
+      //console.log(startDate);
     }
   }, [currentJob]);
+
+  useEffect(() => {
+    if (saveLoader) {
+      M.toast({ html: "Save completed" });
+      getJobsInProcess();
+      setSaveLoder(false);
+    }
+  }, [saveLoader]);
 
   useEffect(() => {
     console.log(`materials ${materials}`);
@@ -44,7 +64,17 @@ export const EditJomModal = () => {
     console.log(`serverType ${serverType}`);
   };
 
-  const click3 = () => {};
+  const onSave = () => {
+    const newJobUpdate = {
+      date: date,
+      serverType,
+      startDate: jobData.startDate,
+    };
+
+    M.toast({ html: "Saving....." });
+    saveUpdate(newJobUpdate, jobData._id);
+    //getJobsInProcess();
+  };
 
   return (
     <div id="edit-job-modal" className="modal">
@@ -66,7 +96,7 @@ export const EditJomModal = () => {
             </a>
           </li>
           <li className="tab col s4">
-            <a href="#tab3" id="tabThree" onClick={click3}>
+            <a href="#tab3" id="tabThree">
               <i className="fas fa-paper-plane"> </i> Save & Submit
             </a>
           </li>
@@ -92,7 +122,7 @@ export const EditJomModal = () => {
                   Ref No: {jobData.otherReference}{" "}
                   <span className="right ">
                     <strong>
-                      <Moment>{jobData.date}</Moment>
+                      <Moment>{jobDataDate}</Moment>
                     </strong>
                   </span>
                 </p>
@@ -101,7 +131,7 @@ export const EditJomModal = () => {
                   {jobData.serverType === null ? (
                     <p>No server type been seleted</p>
                   ) : (
-                    <p>Server type: {jobData.serverType}</p>
+                    <p>Server type: {jobDataServerTye}</p>
                   )}
                   <div className="input-field">
                     <select
@@ -120,7 +150,7 @@ export const EditJomModal = () => {
                     </select>
                   </div>
                   <p>
-                    Start Time: <Moment>{jobData.startDate}</Moment>
+                    Start Time: <Moment>{jobDataDate}</Moment>
                   </p>
                   <label htmlFor="startTime">Set new due time</label>
                   <input
@@ -162,7 +192,7 @@ export const EditJomModal = () => {
                   Ref No: {jobData.otherReference}{" "}
                   <span className="right ">
                     <strong>
-                      <Moment>{jobData.date}</Moment>
+                      <Moment>{jobDataDate}</Moment>
                     </strong>
                   </span>
                 </p>
@@ -226,11 +256,20 @@ export const EditJomModal = () => {
                   Ref No: {jobData.otherReference}{" "}
                   <span className="right ">
                     <strong>
-                      <Moment>{jobData.date}</Moment>
+                      <Moment>{jobDataDate}</Moment>
                     </strong>
                   </span>
                 </p>
                 <div className="row">
+                  <div className="modal-footer">
+                    <a
+                      href="#!"
+                      className=" waves-effect blue white-text btn-flat btn btn-extend"
+                      onClick={onSave}
+                    >
+                      Save
+                    </a>
+                  </div>
                   <br />
 
                   <div className="progress">

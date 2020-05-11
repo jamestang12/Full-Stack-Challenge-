@@ -7,6 +7,7 @@ const Jobs = () => {
   const jobContext = useContext(JobContext);
   const { jobsInProcess, getJobsInProcess, loading, loading2 } = jobContext;
 
+  console.log(jobsInProcess);
   useEffect(() => {
     getJobsInProcess();
     //eslint-disable-next-line

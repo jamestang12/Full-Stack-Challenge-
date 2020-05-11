@@ -14,6 +14,11 @@ import {
   EDIT_MATERIAL,
   UPDATE_MATERIAL,
   ADD_MATERIAL,
+  SAVE_LOADER,
+  SAVE_UPDATE,
+  SAVE_SERVERTYPE,
+  UPDATE_DATE,
+  UPDATE_CURRENT_ITEM,
 } from "../types";
 
 export default (state, action) => {
@@ -24,6 +29,11 @@ export default (state, action) => {
         materials: state.materials.map((material) =>
           material._id === action.payload._id ? action.payload : material
         ),
+      };
+    case SAVE_SERVERTYPE:
+      return {
+        ...state,
+        jobDataServerTye: action.payload,
       };
     case EDIT_MATERIAL:
       return {
@@ -68,6 +78,15 @@ export default (state, action) => {
       };
     }
 
+    case UPDATE_CURRENT_ITEM: {
+      return {
+        ...state,
+        jobsInProcess: state.jobsInProcess.map((job) =>
+          job._id === action.payload._id ? action.payload : job
+        ),
+      };
+    }
+
     case GET_PROGRESS:
       return {
         ...state,
@@ -108,6 +127,26 @@ export default (state, action) => {
         serialNumber: action.payload2,
         jobData: action.payload3,
         jobDataId: action.payload3._id,
+        jobDataServerTye: action.payload4,
+        jobDataDate: action.payload5,
+        jobDataDay: action.payload6,
+      };
+
+    case SAVE_LOADER:
+      return {
+        ...state,
+        saveLoader: action.payload,
+      };
+
+    case UPDATE_DATE:
+      return {
+        ...state,
+        jobDataDate: action.payload,
+      };
+    case SAVE_UPDATE:
+      return {
+        ...state,
+        saveLoader: true,
       };
 
     default:

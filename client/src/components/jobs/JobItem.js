@@ -14,6 +14,7 @@ export const JobItem = ({ job }) => {
     duration,
     date,
     _id,
+    serverType,
   } = job;
   const { tasks, getTasks, loading, timepass } = taskContext;
   const {
@@ -24,7 +25,6 @@ export const JobItem = ({ job }) => {
     setMaterials,
     setMaterialLoader,
   } = jobContext;
-
   useEffect(() => {
     getTasks();
     //eslint-disable-next-line
@@ -34,7 +34,8 @@ export const JobItem = ({ job }) => {
   let problems = "";
 
   const onClick = () => {
-    setTask(problems, serialNumber, job);
+    setTask(problems, serialNumber, job, serverType, date);
+    console.log(`testing ${serverType}`);
     setLoading();
     setEditJob(_id);
     clearState(_id);
@@ -86,12 +87,18 @@ export const JobItem = ({ job }) => {
               <div className="center" style={{ padding: "30px" }}>
                 <i className={textColor2}></i>
                 <h5>{timePass2} days</h5>
-                <div className="progress grey lighten-1">
-                  <div
-                    className={textColor}
-                    style={{ width: `${timePassRate}%` }}
-                  ></div>
-                </div>
+                {timePass2 < 0 ? (
+                  <div className="progress grey lighten-1">
+                    <div className={textColor} style={{ width: "0%" }}></div>
+                  </div>
+                ) : (
+                  <div className="progress grey lighten-1">
+                    <div
+                      className={textColor}
+                      style={{ width: `${timePassRate}%` }}
+                    ></div>
+                  </div>
+                )}
               </div>
             </div>
             <div className="card-stacked">
