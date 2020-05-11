@@ -45,6 +45,14 @@ const Jobs = mongoose.Schema({
     type: String,
     default: null,
   },
+  clientSigh: {
+    type: String,
+    default: null,
+  },
+  kySigh: {
+    type: String,
+    default: null,
+  },
 });
 
 module.exports = mongoose.model("jobs", Jobs);

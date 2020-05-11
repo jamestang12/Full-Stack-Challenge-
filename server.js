@@ -2,12 +2,20 @@ const express = require("express");
 const app = express();
 const PORT = process.env.PORT || 5000;
 const connectDB = require("./config/db");
+const fileupload = require("express-fileupload");
+const path = require("path");
 
 //Connect Database
 connectDB();
 
 //Init Middleware
 app.use(express.json({ extended: false }));
+
+//File uploading
+app.use(fileupload());
+
+//Set static folder
+app.use(express.static(path.join(__dirname, "public ")));
 
 app.get("/", (req, res) => res.send("Welcome to TaskFlow API"));
 

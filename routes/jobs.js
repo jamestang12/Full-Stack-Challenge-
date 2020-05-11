@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const Jobs = require("../models/Jobs");
 const mongoose = require("mongoose");
+const path = require("path");
 
 // @route   POST api/jobs
 // @desc    Adding a new job
@@ -132,6 +133,30 @@ router.put("/:id", async (req, res) => {
     console.log(err);
     res.status(500).send("Server Error");
   }
+});
+
+// @route   PUT /api/jobs/sign/:id
+// @desc    Upload image
+// @access  Public
+router.put("/sign/:id", async (req, res) => {
+  if (!req.files) {
+    res.status(400).send("Please upload a file");
+  }
+
+  const file = req.files.file;
+  if (!file.mimetype.startsWith("image")) {
+    res.status(400).send("Please upload a file");
+  }
+
+  file.name = `sighClient_${req.params.id}${path.parse(file.name).ext}`;
+  file.mv(`./public/upload/${file.name}`, async (err) => {
+    if (err) {
+      res.status(500).send("problem with file upload");
+      console.log(err);
+    }
+    await Jobs.findByIdAndUpdate(req.params.id, { clientSigh: file.name });
+    res.status(200).json(file.name);
+  });
 });
 
 module.exports = router;
