@@ -11,8 +11,6 @@ export const EditTaskModal = () => {
   const [job, setJob] = useState("");
   const [jobId, setJonId] = useState("");
 
-  console.log(currentTask);
-
   useEffect(() => {
     if (currentTask) {
       setJobNumber(currentTask.jobNumber);

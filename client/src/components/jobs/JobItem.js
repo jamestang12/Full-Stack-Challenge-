@@ -66,7 +66,6 @@ export const JobItem = ({ job }) => {
     const dueDate = new Date(date);
     let timePass2 = dueDate.getTime() - currentDate.getTime();
     let timePassRate = Math.round((timePass2 / duration) * 100);
-    console.log(timePassRate);
     timePass2 = Math.round(timePass2 / 1000 / 60 / 60 / 24);
 
     //Set color

@@ -15,6 +15,19 @@ router.get("/:id", async (req, res) => {
   }
 });
 
+// @route   GET api/materials/:id
+// @desc    Get materials
+// @access  Public
+router.get("/", async (req, res) => {
+  try {
+    const materials = await Materials.find();
+    res.json(materials);
+  } catch (err) {
+    console.log(err);
+    res.status(500).send("Server Error");
+  }
+});
+
 // @route   DELETE api/materials/:id
 // @desc    Delete materials
 // @access  Public

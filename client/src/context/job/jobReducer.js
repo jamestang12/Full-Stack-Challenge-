@@ -31,22 +31,24 @@ export default (state, action) => {
     case CLEAR_JOB_DATA:
       return {
         ...state,
-        jobData: [],
+        // jobData: [],
+        // materials: [],
+        currentJob: [],
       };
     case MATERIAL_ALERT:
       return {
         ...state,
-        serverAlert: action.payload,
+        materialAlert: action.payload,
       };
     case SERVER_ALERT:
       return {
         ...state,
-        materialAlert: action.payload,
+        serverAlert: action.payload,
       };
     case ADD_REMOVIE_LIST:
       return {
         ...state,
-        materialRemove: [action.payload, ...state.materialRemove],
+        removeMaterialList: [action.payload, ...state.removeMaterialList],
       };
     case UPDATE_MATERIAL:
       return {

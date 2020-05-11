@@ -116,70 +116,47 @@ const JobState = (props) => {
         });
       }
 
-      try {
-        if (state.materialRemove.length !== 0) {
-          await Promise.all(
-            state.materialRemove.map(async (material) => {
-              await axios.delete(`api/materials/${material._id}`);
-            })
-          );
-        }
+      if (jobValue.removeMaterialList.length !== 0) {
+        await Promise.all(
+          jobValue.removeMaterialList.map(async (material) => {
+            await axios.delete(`api/materials/${material._id}`);
+          })
+        );
+      }
 
-        if (state.orgMaterials.length === 0) {
-          if (state.materials.length !== 0) {
-            await Promise.all(
-              state.materials.map(async (material) => {
-                await axios.post(`api/materials/${id}`, material, config);
-              })
-            );
-          }
-        } else if (state.orgMaterials.length !== 0) {
-          const oldMaterial = [];
-          const newList = [];
-          for (let i = 0; i < state.materials.length; i++) {
-            newList.push(state.materials[i]);
-          }
-          if (state.materials.length !== 0) {
-            for (let i = 0; i < state.materials.length; i++) {
-              for (let x = 0; x < state.orgMaterials.length; x++) {
-                if (state.materials[i]._id === state.orgMaterials[x]._id) {
-                  oldMaterial.push(state.materials[i]);
-                  newList.splice(i, 1);
-                }
-              }
-            }
-          }
+      const newList = [];
+      const oldList = [];
+
+      if (jobValue.orgMaterials.length === 0) {
+        if (jobValue.materials.length !== 0) {
           await Promise.all(
-            newList.map(async (material) => {
+            jobValue.materials.map(async (material) => {
               await axios.post(`api/materials/${id}`, material, config);
             })
           );
-          await Promise.all(
-            oldMaterial.map(async (material) => {
-              await axios.put(
-                `api/materials/${material._id}`,
-                material,
-                config
-              );
-            })
-          );
         }
-      } catch (error) {
-        dispatch({
-          type: ERROR,
-          payload: error,
-        });
       }
+
+      // if (
+      //   jobValue.orgMaterials.length !== 0 &&
+      //   jobValue.materials.length === 0
+      // ) {
+      //   await Promise.all(
+      //     jobValue.orgMaterials.map(async (material) => {
+      //       await axios.put(`api/materials/${material._id}`, material, config);
+      //     })
+      //   );
+      // }
+
       if (state === "submit") {
-        //await axios.put(`api/jobs/${id}`);
         dispatch({
           type: CLEAR_JOB_DATA,
         });
 
         dispatch({
           type: CLEAR_JOB_IN_PROCESS,
-          value: id,
         });
+        await axios.put(`api/jobs/${id}`);
       }
       dispatch({
         type: SAVE_UPDATE,
@@ -393,7 +370,6 @@ const JobState = (props) => {
         saveLoader: state.saveLoader,
         jobDataId: state.jobDataId,
         orgMaterials: state.orgMaterials,
-        materialRemove: state.materialRemove,
         materialLoader: state.materialLoader,
         materials: state.materials,
         loading: state.loading,

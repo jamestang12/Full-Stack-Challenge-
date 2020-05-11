@@ -10,12 +10,14 @@ const Jobs = () => {
   console.log(jobsInProcess);
   useEffect(() => {
     getJobsInProcess();
+    console.log(`sss ${jobsInProcess}`);
     //eslint-disable-next-line
   }, [loading2, loading]);
 
   if (loading || loading2) {
     return <Preloader />;
   } else {
+    console.log(`test   ${jobsInProcess}`);
     return (
       <Fragment>
         <div className="container">

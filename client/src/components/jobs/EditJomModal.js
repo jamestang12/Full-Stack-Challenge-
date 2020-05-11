@@ -14,6 +14,7 @@ export const EditJomModal = () => {
     jobDataDate,
     jobDataServerTye,
     currentJob,
+    orgMaterials,
     loading,
     editTask,
     serialNumber,
@@ -25,7 +26,7 @@ export const EditJomModal = () => {
     setSaveLoder,
     saveLoader,
     getJobsInProcess,
-    materialRemove,
+    removeMaterialList,
     serverAlert,
     setMaterialAlert,
     setServerAlert,
@@ -35,21 +36,16 @@ export const EditJomModal = () => {
   const [date, setDate] = useState("");
   const [save, setSave] = useState("");
   const [submit, setSubmit] = useState("");
+  const [test, setTest] = useState("");
+
   //const [startDate, setStartDate] = useState("");
   useEffect(() => {
     M.AutoInit();
+    setDate("");
+    setServerType("");
+    setSave("save");
+    setSubmit("submit");
   }, []);
-
-  useEffect(() => {
-    if (currentJob._id !== null) {
-      setDate("");
-      setServerType("");
-      setSave("save");
-      setSubmit("submit");
-
-      //console.log(startDate);
-    }
-  }, [currentJob]);
 
   useEffect(() => {
     if (saveLoader) {
@@ -74,11 +70,17 @@ export const EditJomModal = () => {
       date: date,
       serverType,
       startDate: jobData.startDate,
+      removeMaterialList: removeMaterialList,
+      materials: materials,
+      orgMaterials: orgMaterials,
     };
 
     M.toast({ html: "Saving....." });
     //deleteMaterial();
-    console.log(`ssss222ss${materialRemove}`);
+    console.log(`ssss222ss${materials[0]}`);
+
+    console.log(`ssss222ss${removeMaterialList}`);
+
     saveUpdate(newJobUpdate, jobData._id, save);
     //getJobsInProcess();
   };
@@ -99,6 +101,9 @@ export const EditJomModal = () => {
         date: date,
         serverType,
         startDate: jobData.startDate,
+        removeMaterialList: removeMaterialList,
+        materials: materials,
+        orgMaterials: orgMaterials,
       };
       saveUpdate(newSubmit, jobData._id, submit);
     }

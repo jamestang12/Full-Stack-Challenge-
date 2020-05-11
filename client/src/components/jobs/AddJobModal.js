@@ -187,7 +187,7 @@ export const AddJobModal = () => {
           <a
             href="#!"
             onClick={onsubmit}
-            className="modal-close waves-effect blue white-text btn-flat btn btn-extend"
+            className=" waves-effect blue white-text btn-flat btn btn-extend"
           >
             Enter
           </a>
